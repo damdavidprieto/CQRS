@@ -2,15 +2,13 @@
 
 ## Descripción
 
-Este repositorio contiene una prueba técnica para candidatos que deseen unirse a nuestro equipo de desarrollo backend y frontend. El objetivo de la prueba es evaluar las habilidades de los candidatos en el desarrollo de aplicaciones utilizando tecnologías como .NET, C#, SQL Server, Microservicios, Angular y TypeScript.
+Este repositorio contiene una prueba técnica para candidatos que deseen unirse a nuestro equipo de desarrollo backend y frontend. El objetivo de la prueba es evaluar las habilidades de los candidatos en el desarrollo de aplicaciones utilizando tecnologías como .NET, C#, SQL Server, MVC...
 
 ## Instrucciones
 
-### Candidatos Backend:
-
 1. Realizar un programa en .NET - C# que cumpla con los siguientes requisitos:
     - Haz un fork de este proyecto
-    - Crear una clase y una función que consuma la siguiente API: [https://api.opendata.esett.com/](https://api.opendata.esett.com/). Puede escoger cualquier servicio proporcionado por la API.
+    - Consumir la siguiente API: [https://api.opendata.esett.com/](https://api.opendata.esett.com/). Escoge sólo 1 servicio cualquiera de los proporcionados por la API.
     - Almacenar la información obtenida en la base de datos. (usa SQL Server en contenedor de docker para esto)
     - Implementar un controlador que permita filtrar por Primary Key en la base de datos.
     - Construir una API REST con Swagger que permita visualizar los datos almacenados en la base de datos.
@@ -36,7 +34,6 @@ Se valorará positivamente (pero no es obligatorio cumplir con todos estos punto
 
 ## Tecnologías utilizadas
 
-### Backend:
 - .NET - C#
 - SQL Server
 - MVC
@@ -44,11 +41,5 @@ Se valorará positivamente (pero no es obligatorio cumplir con todos estos punto
 ## Estructura del repositorio
 
 No hay restricciones específicas sobre la estructura del repositorio. Los candidatos son libres de organizar su código de la manera que consideren más apropiada. Sin embargo, se recomienda seguir las convenciones de nomenclatura y estructura de proyecto estándar.
-
-## Recursos adicionales
-
-- Documentación oficial de Microsoft sobre [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-6.0)
-- Documentación oficial de Microsoft sobre [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/)
-- Documentación oficial de Angular: [https://angular.io/docs](https://angular.io/docs)
 
 ¡Buena suerte!
