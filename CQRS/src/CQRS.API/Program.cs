@@ -4,6 +4,8 @@ using Serilog.Events;
 using CQRS.Application.Mapping;
 using CQRS.Infrastructure.Data.Context;
 using Microsoft.Extensions.Options;
+using CQRS.Application.Handlers;
+using CQRS.Infrastructure.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +34,8 @@ MappingConfig.Configure();
 //        )
 //    );
 
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateBankCommandHandler).Assembly));
+builder.Services.AddScoped<IBankRepository, BankRepository>();
 
 builder.Services.Configure<RouteOptions>(options => { options.LowercaseUrls = true; });
 

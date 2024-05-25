@@ -16,28 +16,28 @@ public class Controller : Microsoft.AspNetCore.Mvc.Controller
     {
         _mediator = mediator;
     }
-    [HttpPost]
+    [HttpPost("Create")]
     public async Task<ActionResult<BankDto>> CreateBank(CreateBankCommand command)
     {
         var Bank = await _mediator.Send(command);
         return CreatedAtAction(nameof(GetBankById), new { Bic = Bank.Bic }, Bank);
     }
 
-    [HttpGet("{Bic:string}")]
+    [HttpGet("Get")]
     public async Task<ActionResult<BankDto>> GetBankById(string Bic)
     {
         var Bank = await _mediator.Send(new GetBankByIdQuery(Bic));
         return Ok(Bank);
     }
 
-    [HttpGet]
+    [HttpGet("GetAll")]
     public async Task<ActionResult<IEnumerable<BankDto>>> GetBanks()
     {
         var Banks = await _mediator.Send(new GetBanksQuery());
         return Ok(Banks);
     }
 
-    [HttpPut("{Bic:string}")]
+    [HttpPut("Update")]
     public async Task<IActionResult> UpdateBank(string Bic, UpdateBankCommand command)
     {
         if (Bic != command.Bic) return BadRequest();
@@ -46,7 +46,7 @@ public class Controller : Microsoft.AspNetCore.Mvc.Controller
         return NoContent();
     }
 
-    [HttpDelete("{Bic:string}")]
+    [HttpDelete("Delete")]
     public async Task<IActionResult> DeleteBank(string Bic)
     {
         await _mediator.Send(new DeleteBankCommand(Bic));
