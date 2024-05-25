@@ -23,7 +23,7 @@ public class GetBankByIdQueryHandler : IRequestHandler<GetBankByIdQuery, BankDto
 
     public async Task<BankDto> Handle(GetBankByIdQuery request, CancellationToken cancellationToken)
     {
-        var Bank = await _repository.GetByIdAsync(request.Id);
+        var Bank = await _repository.GetByIdAsync(request.Bic);
         if (Bank == null) throw new NotFoundException("Bank not found.");
         return Bank.Adapt<BankDto>();
     }

@@ -23,13 +23,13 @@ public class UpdateBankCommandHandler : IRequestHandler<UpdateBankCommand, BankD
 
     public async Task<BankDto> Handle(UpdateBankCommand request, CancellationToken cancellationToken)
     {
-        var Bank = await _repository.GetByIdAsync(request.Id);
+        var Bank = await _repository.GetByIdAsync(request.Bic);
 
         if (Bank == null) throw new NotFoundException("Bank item not found.");
 
-        //Bank.Name = request.Title;
-        //Bank.Description = request.Description;
-        //Bank.IsCompleted = request.IsCompleted;
+        Bank.Name = request.Name;
+        Bank.Bic = request.Bic;
+        Bank.Country = request.Country;
 
         await _repository.UpdateAsync(Bank);
         return Bank.Adapt<BankDto>();
