@@ -48,7 +48,7 @@ namespace CQRS.Infrastructure.Data.Repositories
 
         public async Task<List<Bank>> GetAllAsync()
         {
-            if (_context.Banks.Any())
+            if (!_context.Banks.Any())
             { 
                 var client = _httpClientFactory.CreateClient();
                 var response = await client.GetFromJsonAsync<List<Bank>>("https://api.opendata.esett.com/EXP06/Banks");
