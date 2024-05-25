@@ -6,4 +6,4 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CQRS.Application.Commands;
-public record DeleteBankCommand(Guid Id) : IRequest;
+public record DeleteBankCommand(string Bic) : IRequest;

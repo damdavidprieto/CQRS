@@ -8,4 +8,4 @@ using System.Threading.Tasks;
 
 namespace CQRS.Application.Queries;
 
-public record GetBankByIdQuery(Guid Id) : IRequest<BankDto>;
+public record GetBankByIdQuery(string Bic) : IRequest<BankDto>;

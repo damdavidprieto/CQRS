@@ -13,9 +13,9 @@ namespace CQRS.Infrastructure.Data.Repositories
     {
         Task AddAsync(Bank todo);
         Task<List<Bank>> GetAllAsync();
-        Task<Bank?> GetByIdAsync(Guid id);
+        Task<Bank?> GetByIdAsync(string Bic);
         Task UpdateAsync(Bank todo);
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(string Bic);
     }
     public class BankRepository : IBankRepository
     {
@@ -31,9 +31,9 @@ namespace CQRS.Infrastructure.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(string Bic)
         {
-            var bank = await _context.Banks.FindAsync(id);
+            var bank = await _context.Banks.FindAsync(Bic);
             if (bank != null)
             {
                 _context.Banks.Remove(bank);
@@ -47,9 +47,9 @@ namespace CQRS.Infrastructure.Data.Repositories
             return result;
         }
 
-        public async Task<Bank?> GetByIdAsync(Guid id)
+        public async Task<Bank?> GetByIdAsync(string Bic)
         {
-            return await _context.Banks.FindAsync(id);
+            return await _context.Banks.FindAsync(Bic);
         }
 
         public async Task UpdateAsync(Bank bank)

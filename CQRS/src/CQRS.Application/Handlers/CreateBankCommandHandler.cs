@@ -23,7 +23,7 @@ namespace CQRS.Application.Handlers
 
         public async Task<BankDto> Handle(CreateBankCommand request, CancellationToken cancellationToken)
         {
-            var bank = new Bank();
+            var bank = new Bank(request.Name,request.Bic,request.Country);
             await _repository.AddAsync(bank);
             return bank.Adapt<BankDto>();
         }
