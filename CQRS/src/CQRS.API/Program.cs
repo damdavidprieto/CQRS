@@ -3,6 +3,7 @@ using Serilog;
 using Serilog.Events;
 using CQRS.Application.Mapping;
 using CQRS.Infrastructure.Data.Context;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,16 +21,16 @@ builder.Host.UseSerilog();
 // Configure services
 MappingConfig.Configure();
 
-if (builder.Environment.IsEnvironment("Test"))
+//if (builder.Environment.IsEnvironment("Test"))
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseInMemoryDatabase("TestDb"));
-else
-    builder.Services.AddDbContext<ApplicationDbContext>(
-        options => options.UseSqlServer(
-            builder.Configuration.GetConnectionString(nameof(ApplicationDbContext)),
-            x => x.MigrationsAssembly("CQRS.Infrastructure")
-        )
-    );
+//else
+//    builder.Services.AddDbContext<ApplicationDbContext>(
+//        options => options.UseSqlServer(
+//            builder.Configuration.GetConnectionString(nameof(ApplicationDbContext)),
+//            x => x.MigrationsAssembly("CQRS.Infrastructure")
+//        )
+//    );
 
 
 builder.Services.Configure<RouteOptions>(options => { options.LowercaseUrls = true; });
@@ -59,9 +60,8 @@ app.Run();
 
 void MigrateDatabase()
 {
-    if (app.Environment.IsEnvironment("Test")) return;
-
     using var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
     using var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
-    context!.Database.Migrate();
+    context!.Database.EnsureCreated();
+    //context.Database.Migrate();
 }
