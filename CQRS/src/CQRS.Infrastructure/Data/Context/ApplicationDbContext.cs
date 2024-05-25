@@ -1,12 +1,16 @@
 using CQRS.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace CQRS.Infrastructure.Data.Context;
 
 public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+    
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpClientFactory httpClientFactory) : base(options)
     {
+        
     }
     public DbSet<Bank> Banks { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

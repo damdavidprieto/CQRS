@@ -42,10 +42,10 @@ builder.Services.Configure<RouteOptions>(options => { options.LowercaseUrls = tr
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
-MigrateDatabase();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -60,6 +60,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+//MigrateDatabase();
 app.Run();
 
 void MigrateDatabase()

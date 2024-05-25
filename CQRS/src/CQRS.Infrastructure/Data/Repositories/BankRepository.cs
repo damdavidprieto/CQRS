@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,14 +22,17 @@ namespace CQRS.Infrastructure.Data.Repositories
     public class BankRepository : IBankRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public BankRepository(ApplicationDbContext context)
+        public BankRepository(ApplicationDbContext context, IHttpClientFactory httpClientFactory)
         {
             _context = context;
+            _httpClientFactory = httpClientFactory;
+            //Seed().GetAwaiter();
         }
-        public async Task AddAsync(Bank todo)
+        public async Task AddAsync(Bank bank)
         {
-            await _context.Banks.AddAsync(todo);
+            await _context.Banks.AddAsync(bank);
             await _context.SaveChangesAsync();
         }
 
@@ -43,6 +48,16 @@ namespace CQRS.Infrastructure.Data.Repositories
 
         public async Task<List<Bank>> GetAllAsync()
         {
+            if (_context.Banks.Any())
+            { 
+                var client = _httpClientFactory.CreateClient();
+                var response = await client.GetFromJsonAsync<List<Bank>>("https://api.opendata.esett.com/EXP06/Banks");
+                foreach (Bank bank in response)
+                {
+                    await _context.Banks.AddAsync(bank);
+                    await _context.SaveChangesAsync();
+                }
+            }
             var result = await _context.Banks.ToListAsync();
             return result;
         }
