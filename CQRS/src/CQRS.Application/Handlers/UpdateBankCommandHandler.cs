@@ -26,9 +26,9 @@ public class UpdateBankCommandHandler : IRequestHandler<UpdateBankCommand, Resul
 
     public async Task<ResultDto<BankDto>> Handle(UpdateBankCommand request, CancellationToken cancellationToken)
     {
+        var result = new ResultDto<BankDto>();
         try
         {
-            var result = new ResultDto<BankDto>();
             var bank = await _repository.GetByIdAsync(request.Bic);
 
             if (bank == null)
@@ -45,19 +45,19 @@ public class UpdateBankCommandHandler : IRequestHandler<UpdateBankCommand, Resul
             _logger.LogInformation("Updated bank with BIC: {Bic}", bank.Bic);
 
             result.Data = bank.Adapt<BankDto>();
-            result.Menssages.Add("Bank updated successfully.");
+            result.Messages.Add("Bank updated successfully.");
 
             return result;
         }
         catch (NotFoundException e)
         {
             _logger.LogWarning(e, "Bank with BIC: {Bic} not found.", request.Bic);
-            throw e;
+            return result;
         }
         catch (Exception e)
         {
             _logger.LogError(e, "An error occurred while updating the bank with BIC: {Bic}", request.Bic);
-            throw e; 
+            return result;
         }
     }
 }

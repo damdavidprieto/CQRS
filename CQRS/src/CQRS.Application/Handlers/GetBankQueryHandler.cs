@@ -25,9 +25,9 @@ public class GetBanksQueryHandler : IRequestHandler<GetBanksQuery, ResultDto<IEn
 
     public async Task<ResultDto<IEnumerable<BankDto>>> Handle(GetBanksQuery request, CancellationToken cancellationToken)
     {
+        var result = new ResultDto<IEnumerable<BankDto>>();
         try
         {
-            var result = new ResultDto<IEnumerable<BankDto>>();
             var banks = await _repository.GetAllAsync();
             result.Data = banks.Adapt<IEnumerable<BankDto>>();
             _logger.LogInformation("Retrieved {Count} banks.", result.Data.Count());
@@ -36,7 +36,7 @@ public class GetBanksQueryHandler : IRequestHandler<GetBanksQuery, ResultDto<IEn
         catch (Exception e)
         {
             _logger.LogError(e, "An error occurred while retrieving all banks.");
-            throw e;
+            return result;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace CQRS.Application.DTOs
     {
         public T? Data { get; set; }
         public int Code { get; set; } = 0;
-        public List<string> Menssages { get; set; } = new List<string>();
+        public List<string> Messages { get; set; } = new List<string>();
     }
     public class ResultDto
     {

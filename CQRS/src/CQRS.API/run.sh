@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Run the application in the background
-dotnet TodoCQRS.API.dll &
+dotnet CQRS.API.dll &
 
 # Get the process ID of the application
 APP_PID=$!
