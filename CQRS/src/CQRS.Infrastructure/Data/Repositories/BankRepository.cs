@@ -28,10 +28,10 @@ namespace CQRS.Infrastructure.Data.Repositories
         {
             _context = context;
             _httpClientFactory = httpClientFactory;
-            //Seed().GetAwaiter();
         }
         public async Task AddAsync(Bank bank)
         {
+            bank.CreatedBy = "User";
             await _context.Banks.AddAsync(bank);
             await _context.SaveChangesAsync();
         }
@@ -54,6 +54,7 @@ namespace CQRS.Infrastructure.Data.Repositories
                 var response = await client.GetFromJsonAsync<List<Bank>>("https://api.opendata.esett.com/EXP06/Banks");
                 foreach (Bank bank in response)
                 {
+                    bank.CreatedBy = "System";
                     await _context.Banks.AddAsync(bank);
                     await _context.SaveChangesAsync();
                 }
@@ -69,6 +70,7 @@ namespace CQRS.Infrastructure.Data.Repositories
 
         public async Task UpdateAsync(Bank bank)
         {
+            bank.UpdatedBy = "User";
             _context.Entry(bank).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
