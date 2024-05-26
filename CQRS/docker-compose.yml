@@ -5,8 +5,8 @@ services:
     build:
       context: .
       dockerfile: src/CQRS.API/Dockerfile
-    image: "arifjmamun/todo-cqrs-api"
-    container_name: "todo-cqrs-api"
+    image: "damdavidprieto/cqrs-api"
+    container_name: "cqrs-api"
     ports:
       - "${HTTP_PORT}:80"
       - "${HTTPS_PORT}:443"
@@ -14,12 +14,12 @@ services:
       - HTTP_PORT=${HTTP_PORT}
       - HTTPS_PORT=${HTTPS_PORT}
     env_file:
-      - src/TodoCQRS.API/list.env
+      - src/CQRS.API/list.env
     volumes:
       - ~/.aspnet/https:/https:ro
-      - todo-db-data:/app/Data
-      - ./src/TodoCQRS.API/run.sh:/app/run.sh:ro
+      - db-data:/app/Data
+      - ./src/CQRS.API/run.sh:/app/run.sh:ro
     entrypoint: ["/bin/sh", "/app/run.sh"]
 
 volumes:
-  todo-db-data:
+  db-data:
