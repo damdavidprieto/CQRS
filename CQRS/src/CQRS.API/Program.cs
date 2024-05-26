@@ -23,16 +23,16 @@ builder.Host.UseSerilog();
 // Configure services
 MappingConfig.Configure();
 
-//if (builder.Environment.IsEnvironment("Test"))
+if (builder.Environment.IsEnvironment("Test"))
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseInMemoryDatabase("TestDb"));
-//else
-//    builder.Services.AddDbContext<ApplicationDbContext>(
-//        options => options.UseSqlServer(
-//            builder.Configuration.GetConnectionString(nameof(ApplicationDbContext)),
-//            x => x.MigrationsAssembly("CQRS.Infrastructure")
-//        )
-//    );
+else
+    builder.Services.AddDbContext<ApplicationDbContext>(
+        options => options.UseSqlServer(
+            builder.Configuration.GetConnectionString(nameof(ApplicationDbContext)),
+            x => x.MigrationsAssembly("CQRS.Infrastructure")
+        )
+    );
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateBankCommandHandler).Assembly));
 builder.Services.AddScoped<IBankRepository, BankRepository>();

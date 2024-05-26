@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CQRS.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240525013515_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240526041744_initialCreate")]
+    partial class initialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,7 +41,7 @@ namespace CQRS.Infrastructure.Migrations
 
                     b.HasKey("Bic");
 
-                    b.ToTable("Todos");
+                    b.ToTable("Banks");
                 });
 #pragma warning restore 612, 618
         }

@@ -5,13 +5,13 @@
 namespace CQRS.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class initialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Todos",
+                name: "Banks",
                 columns: table => new
                 {
                     Bic = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -20,7 +20,7 @@ namespace CQRS.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Todos", x => x.Bic);
+                    table.PrimaryKey("PK_Banks", x => x.Bic);
                 });
         }
 
@@ -28,7 +28,7 @@ namespace CQRS.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Todos");
+                name: "Banks");
         }
     }
 }
