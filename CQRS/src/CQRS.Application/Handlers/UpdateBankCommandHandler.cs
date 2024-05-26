@@ -46,18 +46,16 @@ public class UpdateBankCommandHandler : IRequestHandler<UpdateBankCommand, Resul
 
             result.Data = bank.Adapt<BankDto>();
             result.Messages.Add("Bank updated successfully.");
-
-            return result;
         }
         catch (NotFoundException e)
         {
             _logger.LogWarning(e, "Bank with BIC: {Bic} not found.", request.Bic);
-            return result;
+        
         }
         catch (Exception e)
         {
             _logger.LogError(e, "An error occurred while updating the bank with BIC: {Bic}", request.Bic);
-            return result;
         }
+        return result;
     }
 }

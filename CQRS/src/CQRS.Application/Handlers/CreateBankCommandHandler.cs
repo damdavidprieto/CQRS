@@ -43,7 +43,6 @@ public class CreateBankCommandHandler : IRequestHandler<CreateBankCommand, Resul
             result.Code = -1; // Error code
             result.Messages.Add("An error occurred while creating the bank.");
             _logger.LogError(ex, "An error occurred while creating a bank with BIC {Bic}.", request.Bic);
-            return result;
         }
 
         return result;
