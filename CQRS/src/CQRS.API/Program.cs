@@ -28,7 +28,6 @@ Log.Logger = new LoggerConfiguration()
             AdditionalColumns = new Collection<SqlColumn>
             {
                 new SqlColumn { ColumnName = "UserName", DataType = SqlDbType.NVarChar, DataLength = 128 },
-                // Add more columns as needed
             }
         }
     )
@@ -36,6 +35,9 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
+// Load configuration
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+builder.Services.Configure<BankApiOptions>(builder.Configuration.GetSection("BankApi"));
 // Configure services
 MappingConfig.Configure();
 

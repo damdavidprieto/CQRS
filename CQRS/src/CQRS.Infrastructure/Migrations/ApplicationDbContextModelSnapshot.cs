@@ -53,7 +53,7 @@ namespace CQRS.Infrastructure.Migrations
 
                     b.HasKey("Bic");
 
-                    b.ToTable("Banks");
+                    b.ToTable("Banks", (string)null);
                 });
 #pragma warning restore 612, 618
         }
