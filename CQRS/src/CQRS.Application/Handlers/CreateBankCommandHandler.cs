@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CQRS.Application.Handlers;
-public class CreateBankCommandHandler : IRequestHandler<CreateBankCommand, BankDto>
+public class CreateBankCommandHandler : IRequestHandler<CreateBankCommand, ResultDto<BankDto>>
 {
     private readonly IBankRepository _repository;
     private readonly ILogger<CreateBankCommandHandler> _logger;
@@ -23,15 +23,16 @@ public class CreateBankCommandHandler : IRequestHandler<CreateBankCommand, BankD
         _logger = logger;
     }
 
-    public async Task<BankDto> Handle(CreateBankCommand request, CancellationToken cancellationToken)
+    public async Task<ResultDto<BankDto>> Handle(CreateBankCommand request, CancellationToken cancellationToken)
     {
+        var result = new ResultDto<BankDto>();
         var bank = new Bank(request.Name,request.Bic,request.Country);
         await _repository.AddAsync(bank);
-        var bankDto = bank.Adapt<BankDto>();
-        bankDto.Code = 0;
-        bankDto.Menssages.Add("Bank successfully created.");
+        result.Code = 0;
+        result.Menssages.Add("Bank successfully created.");
+        result.Data = bank.Adapt<BankDto>();
         _logger.LogInformation("A new bank with BIC {Bic} was successfully created.", bank.Bic);
-        return bank.Adapt<BankDto>();
+        return result;
     }
 }
 

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CQRS.Application.Handlers;
 
-public class GetBankByIdQueryHandler : IRequestHandler<GetBankByIdQuery, BankDto>
+public class GetBankByIdQueryHandler : IRequestHandler<GetBankByIdQuery, ResultDto<BankDto>>
 {
     private readonly IBankRepository _repository;
     private readonly ILogger<GetBankByIdQueryHandler> _logger;
@@ -24,9 +24,9 @@ public class GetBankByIdQueryHandler : IRequestHandler<GetBankByIdQuery, BankDto
         _logger = logger;
     }
 
-    public async Task<BankDto> Handle(GetBankByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ResultDto<BankDto>> Handle(GetBankByIdQuery request, CancellationToken cancellationToken)
     {
-        var result = new BankDto();
+        var result = new ResultDto<BankDto>();
         var Bank = await _repository.GetByIdAsync(request.Bic);
         if (Bank == null)
         {
@@ -34,7 +34,7 @@ public class GetBankByIdQueryHandler : IRequestHandler<GetBankByIdQuery, BankDto
             throw new NotFoundException("Bank not found.");
         }
         _logger.LogInformation("Retrieved bank with BIC {Bic}.", request.Bic);
-        result = Bank.Adapt<BankDto>();
+        result.Data = Bank.Adapt<BankDto>();
         return result;
     }
 }

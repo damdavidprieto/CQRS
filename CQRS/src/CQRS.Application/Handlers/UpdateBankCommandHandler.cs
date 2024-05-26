@@ -4,6 +4,7 @@ using CQRS.Domain.Exceptions;
 using CQRS.Infrastructure.Data.Repositories;
 using Mapster;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,26 +13,51 @@ using System.Threading.Tasks;
 
 namespace CQRS.Application.Handlers;
 
-public class UpdateBankCommandHandler : IRequestHandler<UpdateBankCommand, BankDto>
+public class UpdateBankCommandHandler : IRequestHandler<UpdateBankCommand, ResultDto<BankDto>>
 {
     private readonly IBankRepository _repository;
+    private readonly ILogger<UpdateBankCommandHandler> _logger;
 
-    public UpdateBankCommandHandler(IBankRepository repository)
+    public UpdateBankCommandHandler(IBankRepository repository, ILogger<UpdateBankCommandHandler> logger)
     {
         _repository = repository;
+        _logger = logger;
     }
 
-    public async Task<BankDto> Handle(UpdateBankCommand request, CancellationToken cancellationToken)
+    public async Task<ResultDto<BankDto>> Handle(UpdateBankCommand request, CancellationToken cancellationToken)
     {
-        var Bank = await _repository.GetByIdAsync(request.Bic);
+        try
+        {
+            var result = new ResultDto<BankDto>();
+            var bank = await _repository.GetByIdAsync(request.Bic);
 
-        if (Bank == null) throw new NotFoundException("Bank item not found.");
+            if (bank == null)
+            {
+                _logger.LogWarning("Bank with BIC: {Bic} not found.", request.Bic);
+                throw new NotFoundException("Bank item not found.");
+            }
 
-        Bank.Name = request.Name;
-        Bank.Bic = request.Bic;
-        Bank.Country = request.Country;
+            bank.Name = request.Name;
+            bank.Bic = request.Bic; // Usually, BIC should not be updated as it is an identifier
+            bank.Country = request.Country;
 
-        await _repository.UpdateAsync(Bank);
-        return Bank.Adapt<BankDto>();
+            await _repository.UpdateAsync(bank);
+            _logger.LogInformation("Updated bank with BIC: {Bic}", bank.Bic);
+
+            result.Data = bank.Adapt<BankDto>();
+            result.Menssages.Add("Bank updated successfully.");
+
+            return result;
+        }
+        catch (NotFoundException e)
+        {
+            _logger.LogWarning(e, "Bank with BIC: {Bic} not found.", request.Bic);
+            throw e;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "An error occurred while updating the bank with BIC: {Bic}", request.Bic);
+            throw e; 
+        }
     }
 }

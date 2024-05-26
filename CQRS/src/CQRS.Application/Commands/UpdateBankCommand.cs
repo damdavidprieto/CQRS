@@ -8,4 +8,4 @@ using System.Threading.Tasks;
 
 namespace CQRS.Application.Commands;
 
-public record UpdateBankCommand(string Bic, string Name, string Country) : IRequest<BankDto>;
+public record UpdateBankCommand(string Bic, string Name, string Country) : IRequest<ResultDto<BankDto>>;

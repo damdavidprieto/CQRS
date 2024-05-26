@@ -19,8 +19,8 @@ public class Controller : Microsoft.AspNetCore.Mvc.Controller
     [HttpPost("Create")]
     public async Task<ActionResult<BankDto>> CreateBank(CreateBankCommand command)
     {
-        var Bank = await _mediator.Send(command);
-        return CreatedAtAction(nameof(GetBankById), new { Bic = Bank.Bic }, Bank);
+        var result = await _mediator.Send(command);
+        return CreatedAtAction(nameof(GetBankById), new { Bic = result.Data.Bic }, result);
     }
 
     [HttpGet("Get")]
