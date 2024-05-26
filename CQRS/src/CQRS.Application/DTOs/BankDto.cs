@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CQRS.Application.DTOs
 {
-    public class BankDto
+    public class BankDto : ResultDto
     {
         public string Name { get; set; }
         public string Bic { get; set; }
