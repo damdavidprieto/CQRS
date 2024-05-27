@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CQRS.Application.Handlers;
 
-public class GetBanksQueryHandler : IRequestHandler<GetBanksQuery, ResultDto<IEnumerable<BankDto>>>
+public class GetBanksQueryHandler : IRequestHandler<GetBanksQuery, ResultListDto<BankDto>>
 {
     private readonly IBankRepository _repository;
     private readonly ILogger<GetBanksQueryHandler> _logger;
@@ -23,16 +23,18 @@ public class GetBanksQueryHandler : IRequestHandler<GetBanksQuery, ResultDto<IEn
         _logger = logger;
     }
 
-    public async Task<ResultDto<IEnumerable<BankDto>>> Handle(GetBanksQuery request, CancellationToken cancellationToken)
+    public async Task<ResultListDto<BankDto>> Handle(GetBanksQuery request, CancellationToken cancellationToken)
     {
-        var result = new ResultDto<IEnumerable<BankDto>>();
+        var result = new ResultListDto<BankDto>();
         try
         {
             var banks = await _repository.GetAllAsync();
-            result.Data = banks.Adapt<IEnumerable<BankDto>>();
+            result.Data = new PaginationDto<BankDto>();
+            result.Data.TotalItems = banks.Count;
+            result.Data.Items = banks.Adapt<IEnumerable<BankDto>>();
             result.Code = 0; // Success code
-            result.Messages.Add($"Retrieved {result.Data.Count()} banks.");
-            _logger.LogInformation("Retrieved {Count} banks.", result.Data.Count());
+            result.Messages.Add($"Retrieved {result.Data.TotalItems} banks.");
+            _logger.LogInformation("Retrieved {Count} banks.", result.Data.TotalItems);
         }
         catch (Exception e)
         {

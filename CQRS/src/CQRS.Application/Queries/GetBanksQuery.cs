@@ -8,4 +8,4 @@ using System.Threading.Tasks;
 
 namespace CQRS.Application.Queries;
 
-public record GetBanksQuery : IRequest<ResultDto<IEnumerable<BankDto>>>;
+public record GetBanksQuery : IRequest<ResultListDto<BankDto>>;
