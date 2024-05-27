@@ -94,7 +94,15 @@ namespace CQRS.Infrastructure.Data.Repositories
                         _logger.LogInformation("Added bank from external source with BIC: {Bic}", bank.Bic);
                     }
                 }
-                var result = await _context.Banks.ToListAsync();
+                IQueryable<Bank> query = _context.Banks;
+
+                if (pageNumber.HasValue && pageSize.HasValue)
+                {
+                    int skip = (pageNumber.Value - 1) * pageSize.Value;
+                    query = query.Skip(skip).Take(pageSize.Value);
+                }
+
+                var result = await query.ToListAsync();
                 _logger.LogInformation("Retrieved {Count} banks", result.Count);
                 return result;
             }

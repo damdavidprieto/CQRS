@@ -31,6 +31,8 @@ public class GetBanksQueryHandler : IRequestHandler<GetBanksQuery, ResultListDto
             var banks = await _repository.GetAllAsync(request.PageNumber,request.PageSize);
             result.Data = new PaginationDto<BankDto>();
             result.Data.TotalItems = banks.Count;
+            result.Data.PageNumber = request.PageNumber;
+            result.Data.PageSize = request.PageSize;
             result.Data.Items = banks.Adapt<IEnumerable<BankDto>>();
             result.Code = 0; // Success code
             result.Messages.Add($"Retrieved {result.Data.TotalItems} banks.");
