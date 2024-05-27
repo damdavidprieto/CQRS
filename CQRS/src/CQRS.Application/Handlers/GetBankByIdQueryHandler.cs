@@ -27,14 +27,28 @@ public class GetBankByIdQueryHandler : IRequestHandler<GetBankByIdQuery, ResultD
     public async Task<ResultDto<BankDto>> Handle(GetBankByIdQuery request, CancellationToken cancellationToken)
     {
         var result = new ResultDto<BankDto>();
-        var Bank = await _repository.GetByIdAsync(request.Bic);
-        if (Bank == null)
+        try
         {
-            _logger.LogWarning("Bank with BIC {Bic} was not found.", request.Bic);
-            throw new NotFoundException("Bank not found.");
+            var bank = await _repository.GetByIdAsync(request.Bic);
+            if (bank == null)
+            {
+                _logger.LogWarning("Bank with BIC {Bic} was not found.", request.Bic);
+                result.Messages.Add("Bank not found.");
+                result.Code = 1; // Error code for not found
+                return result;
+            }
+
+            _logger.LogInformation("Retrieved bank with BIC {Bic}.", request.Bic);
+            result.Data = bank.Adapt<BankDto>();
+            result.Code = 0; // Success code
+            result.Messages.Add("Bank successfully retrieved.");
         }
-        _logger.LogInformation("Retrieved bank with BIC {Bic}.", request.Bic);
-        result.Data = Bank.Adapt<BankDto>();
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while retrieving the bank with BIC {Bic}.", request.Bic);
+            result.Messages.Add("An error occurred while retrieving the bank.");
+            result.Code = -1; // General error code
+        }
         return result;
     }
 }

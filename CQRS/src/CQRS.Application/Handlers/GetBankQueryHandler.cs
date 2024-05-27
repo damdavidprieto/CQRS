@@ -30,13 +30,16 @@ public class GetBanksQueryHandler : IRequestHandler<GetBanksQuery, ResultDto<IEn
         {
             var banks = await _repository.GetAllAsync();
             result.Data = banks.Adapt<IEnumerable<BankDto>>();
+            result.Code = 0; // Success code
+            result.Messages.Add($"Retrieved {result.Data.Count()} banks.");
             _logger.LogInformation("Retrieved {Count} banks.", result.Data.Count());
-            return result;
         }
         catch (Exception e)
         {
+            result.Code = -1; // Error code
+            result.Messages.Add("An error occurred while retrieving all banks.");
             _logger.LogError(e, "An error occurred while retrieving all banks.");
-            return result;
         }
+        return result;
     }
 }
