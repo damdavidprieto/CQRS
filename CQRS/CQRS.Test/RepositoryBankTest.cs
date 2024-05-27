@@ -81,7 +81,7 @@ namespace CQRS.Test
             _mockContext.Setup(m => m.Banks.ToListAsync(default)).ReturnsAsync(banks);
 
             // Act
-            var result = await repository.GetAllAsync();
+            var result = await repository.GetAllAsync(null, null);
 
             // Assert
             Assert.Equal(2, result.Count);

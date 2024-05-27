@@ -20,7 +20,7 @@ namespace CQRS.Infrastructure.Data.Repositories
     public interface IBankRepository
     {
         Task AddAsync(Bank todo);
-        Task<List<Bank>> GetAllAsync();
+        Task<List<Bank>> GetAllAsync(int? pageNumber, int? pageSize);
         Task<Bank?> GetByIdAsync(string Bic);
         Task UpdateAsync(Bank todo);
         Task DeleteAsync(string Bic);
@@ -78,7 +78,7 @@ namespace CQRS.Infrastructure.Data.Repositories
             }
         }
 
-        public async Task<List<Bank>> GetAllAsync()
+        public async Task<List<Bank>> GetAllAsync(int? pageNumber, int? pageSize)
         {
             try
             {

@@ -31,9 +31,9 @@ public class Controller : Microsoft.AspNetCore.Mvc.Controller
     }
 
     [HttpGet("GetAll")]
-    public async Task<ActionResult<IEnumerable<BankDto>>> GetBanks()
+    public async Task<ActionResult<IEnumerable<BankDto>>> GetBanks(int? pageNumber, int? pageSize)
     {
-        var Banks = await _mediator.Send(new GetBanksQuery());
+        var Banks = await _mediator.Send(new GetBanksQuery(pageNumber,pageSize));
         return Ok(Banks);
     }
 
