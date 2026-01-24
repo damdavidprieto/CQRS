@@ -1,45 +1,60 @@
-# Prueba Técnica para candidatos
+# 🏗️ Backend Architecture: Clean Architecture + CQRS (.NET)
 
-## Descripción
+![Status: Archived](https://img.shields.io/badge/Status-Archivado%20%2F%20Research-orange?style=flat-square)
+![Tech: .NET 7](https://img.shields.io/badge/Stack-.NET%207-512bd4?style=flat-square)
+![Pattern: CQRS](https://img.shields.io/badge/Pattern-CQRS-blue?style=flat-square)
+![Architecture: Clean](https://img.shields.io/badge/Arch-Clean%20Architecture-green?style=flat-square)
 
-Este repositorio contiene una prueba técnica para candidatos que deseen unirse a nuestro equipo de desarrollo backend y frontend. El objetivo de la prueba es evaluar las habilidades de los candidatos en el desarrollo de aplicaciones utilizando tecnologías como .NET, C#, SQL Server, MVC...
+> **Nota de Archivo**
+> Este repositorio constituye un ejemplo avanzado de implementación de **Backend en .NET 7**, siguiendo patrones de diseño empresariales. Se conserva como parte de un portfolio de ingeniería de software para demostrar competencias en arquitecturas desacopladas y escalables.
 
-## Instrucciones
+---
 
-1. Realizar un programa en .NET - C# que cumpla con los siguientes requisitos:
-    - Haz un fork de este proyecto
-    - Consumir la siguiente API: [https://api.opendata.esett.com/](https://api.opendata.esett.com/). Escoge sólo 1 servicio cualquiera de los proporcionados por la API.
-    - Almacenar la información obtenida en la base de datos. (usa SQL Server en contenedor de docker para esto)
-    - Implementar un controlador que permita filtrar por Primary Key en la base de datos.
-    - Construir una API REST con Swagger que permita visualizar los datos almacenados en la base de datos.
-    - Usar contenedores Docker para DDBB y la propia App
-    - Usa arquitectura MVC (sólo API imagina que existe un segundo proyecto con el frontend, por tanto las vistas serán DTOs)
-    - Haz un pull request con tu nombre completo y comenta lo que creas necesario al evaluador técnico.
-    - Elige entre implementar CRUD o CQRS
+## 🎯 Visión Técnica
 
-### Criterios de evaluación:
+El proyecto implementa un sistema de gestión bancaria (Bank API) cuya prioridad es el **desacoplamiento total** entre la lógica de negocio y las dependencias de infraestructura. La arquitectura garantiza que el núcleo del sistema sea testeable, mantenible y agnóstico a la persistencia.
 
-Se valorará positivamente (pero no es obligatorio cumplir con todos estos puntos):
+Principios aplicados:
+*   **Separación de Responsabilidades**: Implementación estricta de las capas de Clean Architecture.
+*   **CQRS (Command Query Responsibility Segregation)**: División de las operaciones de lectura y escritura para optimizar el rendimiento y la consistencia.
+*   **Inversión de Dependencias**: El núcleo de la aplicación (Domain) no depende de marcos externos ni de la base de datos.
 
-1. El uso de código limpio y buenas prácticas de programación tanto en el frontend como en el backend.
-2. Utilizar código generado a mano en lugar de depender excesivamente de herramientas de generación automática.
-3. Hacer commits frecuentes y bien explicados durante el desarrollo.
-4. Demostrar conocimientos en patrones de diseño, tanto en el frontend como en el backend.
-5. Gestion correcta de los secretos como cadenas de conexión, usuarios, passwords...
-6. Uso del inglés en código y comentarios
-7. Uso de elementos de monitoreo y observabilidad como ILogger
-8. Uso de Eventos
-9. Manejo de excepciones con patron monad
-10. Pruebas de test
+---
 
-## Tecnologías utilizadas
+## 🏗️ Arquitectura de Círculos (Clean Architecture)
 
-- .NET - C#
-- SQL Server
-- MVC
+El código está organizado en cuatro proyectos principales:
 
-## Estructura del repositorio
+- **1. CQRS.Domain**: El "corazón" del sistema. Contiene entidades, excepciones de dominio e interfaces de repositorio sin dependencias externas.
+- **2. CQRS.Application**: Orquestación de la lógica. Define los **Commands** y **Queries**, sus **Handlers** (vía MediatR) y los DTOs. Utiliza **Mapster** para transformaciones de datos ultra-rápidas.
+- **3. CQRS.Infrastructure**: Implementación de los detalles. Contiene el contexto de **Entity Framework Core**, migraciones de SQL Server y la integración con repositorios reales.
+- **4. CQRS.API**: El punto de entrada REST. Controladores delgados que delegan toda la lógica a los handlers de aplicación.
 
-No hay restricciones específicas sobre la estructura del repositorio. Los candidatos son libres de organizar su código de la manera que consideren más apropiada. Sin embargo, se recomienda seguir las convenciones de nomenclatura y estructura de proyecto estándar.
+---
 
-¡Buena suerte!
+## 🛠️ Stack Tecnológico & Patrones
+
+*   **Runtime**: [.NET 7.0](https://dotnet.microsoft.com/download/dotnet/7.0)
+*   **Mediator Pattern**: [MediatR](https://github.com/jbogard/MediatR) para el desacoplamiento de handlers.
+*   **ORM**: [Entity Framework Core](https://docs.microsoft.com/ef/core/) para SQL Server.
+*   **Mapping**: [Mapster](https://github.com/MapsterMapper/Mapster) - La alternativa de alto rendimiento a AutoMapper.
+*   **Logging**: [Serilog](https://serilog.net/) con sumideros (sinks) para consola y **SQL Server**.
+*   **Containerization**: Docker & Docker Compose para el despliegue local de la base de datos y la app.
+*   **Documentation**: Swagger/OpenAPI para la exploración interactiva de la API.
+
+---
+
+## 🚀 Despliegue y Ejecución
+
+El proyecto está listo para ejecutarse en contenedores, facilitando el entorno de desarrollo:
+
+1.  **Levantar el entorno (Docker)**
+    ```bash
+    docker-compose up -d
+    ```
+2.  **Acceder a la documentación API**
+    Una vez en ejecución, la interfaz de Swagger estará disponible en:
+    `http://localhost:5000/swagger/index.html`
+
+---
+*Este repositorio es un testimonio de ingeniería aplicada a soluciones backend robustas y modernas.*
