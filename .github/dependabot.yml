@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: monthly
+  - package-ecosystem: nuget
+    directories:
+      - "/CQRS/src/CQRS.API"
+      - "/CQRS/src/CQRS.Application"
+      - "/CQRS/src/CQRS.Domain"
+      - "/CQRS/src/CQRS.Infrastructure"
+      - "/CQRS/CQRS.Test"
+    schedule:
+      interval: monthly
