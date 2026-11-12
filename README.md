@@ -1,11 +1,11 @@
 # 🏗️ Backend Architecture: Clean Architecture + CQRS (.NET)
 
-![Status: Archived](https://img.shields.io/badge/Status-Archivado%20%2F%20Research-orange?style=flat-square)
+[![CI](https://github.com/damdavidprieto/CQRS/actions/workflows/dotnet.yml/badge.svg)](https://github.com/damdavidprieto/CQRS/actions/workflows/dotnet.yml)
 ![Tech: .NET 7](https://img.shields.io/badge/Stack-.NET%207-512bd4?style=flat-square)
 ![Pattern: CQRS](https://img.shields.io/badge/Pattern-CQRS-blue?style=flat-square)
 ![Architecture: Clean](https://img.shields.io/badge/Arch-Clean%20Architecture-green?style=flat-square)
 
-> **Nota de Archivo**
+> **Sobre este proyecto**
 > Este repositorio constituye un ejemplo avanzado de implementación de **Backend en .NET 7**, siguiendo patrones de diseño empresariales. Se conserva como parte de un portfolio de ingeniería de software para demostrar competencias en arquitecturas desacopladas y escalables.
 
 ---
@@ -55,6 +55,14 @@ El proyecto está listo para ejecutarse en contenedores, facilitando el entorno 
 2.  **Acceder a la documentación API**
     Una vez en ejecución, la interfaz de Swagger estará disponible en:
     `http://localhost:5000/swagger/index.html`
+
+## 🧪 Tests
+
+Los tests unitarios (xUnit, EF Core InMemory) se ejecutan en cada push con GitHub Actions:
+
+```bash
+dotnet test CQRS/CQRS.sln
+```
 
 ---
 *Este repositorio es un testimonio de ingeniería aplicada a soluciones backend robustas y modernas.*
